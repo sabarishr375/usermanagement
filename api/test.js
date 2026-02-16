@@ -1,3 +1,5 @@
+const pool = require('./db');
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   
@@ -11,18 +13,9 @@ export default async function handler(req, res) {
     });
   }
   
-  // Try to connect
+  // Try to connect using the shared pool
   try {
-    const { Pool } = require('pg');
-    const pool = new Pool({
-      connectionString: dbUrl,
-      ssl: {
-        rejectUnauthorized: false
-      }
-    });
-    
     const result = await pool.query('SELECT NOW()');
-    await pool.end();
     
     return res.status(200).json({ 
       success: true,
