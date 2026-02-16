@@ -1,0 +1,17 @@
+{
+  "name": "usermanagement",
+  "version": "1.0.0",
+  "description": "User Management API for Vercel",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}
