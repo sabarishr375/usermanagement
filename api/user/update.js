@@ -1,6 +1,6 @@
 const pool = require('../db');
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -37,4 +37,4 @@ module.exports = async (req, res) => {
     console.error('Error updating user:', error);
     res.status(500).json({ error: error.message });
   }
-};
+}
