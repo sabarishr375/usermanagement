@@ -287,16 +287,28 @@
         async function loadUsers() {
             try {
                 const response = await fetch(`${API_BASE_URL}/getall`);
-                const users = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Check if data is an array
+                if (!Array.isArray(data)) {
+                    console.error('API returned non-array data:', data);
+                    showMessage('Error: Invalid data format from server', 'error');
+                    return;
+                }
                 
                 const tbody = document.getElementById('usersTableBody');
                 
-                if (users.length === 0) {
+                if (data.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No users found</td></tr>';
                     return;
                 }
                 
-                tbody.innerHTML = users.map(user => `
+                tbody.innerHTML = data.map(user => `
                     <tr>
                         <td>${user.id}</td>
                         <td>${user.username || '-'}</td>
@@ -312,7 +324,7 @@
                 `).join('');
             } catch (error) {
                 console.error('Error loading users:', error);
-                showMessage('Error loading users', 'error');
+                showMessage('Error loading users: ' + error.message, 'error');
             }
         }
 

@@ -17,10 +17,19 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Check if DATABASE_URL is set
+    if (!process.env.DATABASE_URL) {
+      console.error('DATABASE_URL environment variable is not set');
+      return res.status(500).json({ error: 'Database configuration error' });
+    }
+
     const result = await pool.query('SELECT * FROM users ORDER BY id ASC');
-    res.status(200).json(result.rows);
+    
+    // Ensure we return an array
+    const users = result.rows || [];
+    res.status(200).json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message, details: 'Database connection failed' });
   }
 }
